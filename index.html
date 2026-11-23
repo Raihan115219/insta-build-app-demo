@@ -2103,8 +2103,9 @@ function flowAct(a,id,b){
   vv.addEventListener('resize',upd);vv.addEventListener('scroll',upd);addEventListener('resize',upd);upd()})();
 var FLOWVIEWS={splash:vSplash,onboard:vOnboard,setup:vSetup,addr:vAddr,paying:vPaying,payfail:vPayFail,confirmed:vConfirmed,orderd:vOrderD,claim:vClaimNew,claims:vClaims};
 (function(){var q=location.search||'',h=location.hash||'';
-  if(/[?&]home\b/.test(q)||h==='#home'){S.stack=[{s:'home'}];S.authed=true;S.isNew=false;S.load='tab'}
-  else{S.stack=[{s:'splash'}];setTimeout(function(){if(cur().s==='splash')root({s:'onboard'})},2000)}
+  /* demo: open the home page directly. Add ?flow (or #flow) to the URL to see splash, onboarding and login first. */
+  if(/[?&]flow\b/.test(q)||h==='#flow'){S.stack=[{s:'splash'}];setTimeout(function(){if(cur().s==='splash')root({s:'onboard'})},2000)}
+  else{S.stack=[{s:'home'}];S.authed=true;S.isNew=false;S.load='tab'}
   setTimeout(openThemeDlg,400)})();
 
 /* ---------------- RENDER ---------------- */
