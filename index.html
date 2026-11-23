@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="b">
+<html lang="en" data-theme="a">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
@@ -237,7 +237,7 @@ textarea.inp{height:auto;padding:12px 14px;resize:none}
 @media(prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
 
 /* ================= v2: THEMES ================= */
-html[data-theme=b]{--p:#1D4ED8;--ph:#1E40AF;--pl:#E7EDFF;--pl2:#CFDBFF;--bg2:#F3F6FC;--stage:#E4E9F3;--hd-a:#0A2463;--hd-b:#17419A;--hd-ink:#fff;--hd-sub:rgba(255,255,255,.74);--hd-chip:rgba(255,255,255,.14);--off:#F97316;--dk:#0A2463;--g1:linear-gradient(125deg,#0A2463,#2B62E8);--c1:#fff;--g2:linear-gradient(125deg,#EA580C,#FB923C);--c2:#fff;--g3:linear-gradient(125deg,#0F766E,#2DD4BF);--c3:#fff}
+html[data-theme=a]{--p:#0C8A3A;--ph:#087030;--pl:#E6F6EB;--pl2:#C9EAD5;--bg2:#F5F6F1;--stage:#ECEADF;--hd-a:#FFD43B;--hd-b:#FFE978;--hd-ink:#1A1A1A;--hd-sub:#6B5B05;--hd-chip:rgba(255,255,255,.62);--off:#E5484D;--dk:#12301E;--g1:linear-gradient(125deg,#0A7A33,#1DB85E);--c1:#fff;--g2:linear-gradient(125deg,#FFAE1A,#FFD968);--c2:#2A1F00;--g3:linear-gradient(125deg,#1D2B3A,#3B5068);--c3:#fff}
 html[data-theme=c]{--p:#7028E8;--ph:#5B21B6;--pl:#F3EDFF;--pl2:#E4D6FF;--bg2:#F8F8FC;--stage:#F1F0F5;--hd-a:#D9C4FF;--hd-b:#EEE3FF;--hd-ink:#1D0F3D;--hd-sub:#5E4A8C;--hd-chip:rgba(255,255,255,.7);--off:#DB2777;--dk:#2A1263;--g1:linear-gradient(125deg,#5B21B6,#8B5CF6);--c1:#fff;--g2:linear-gradient(125deg,#FBBF24,#FDE68A);--c2:#2B1A00;--g3:linear-gradient(125deg,#BE185D,#F472B6);--c3:#fff}
 body{background:var(--stage);padding-top:48px;transition:background .4s}
 body.clean{padding-top:0}
@@ -413,7 +413,7 @@ body.clean #themebar{display:none}
 @property --hd-a{syntax:'<color>';inherits:true;initial-value:#0A2463}
 @property --hd-b{syntax:'<color>';inherits:true;initial-value:#17419A}
 .page{transition:--hd-a .55s ease,--hd-b .55s ease}
-html[data-theme=b] .page.hue{--hd-a:hsl(var(--hue) 68% 20%);--hd-b:hsl(var(--hue) 60% 31%)}
+html[data-theme=a] .page.hue{--hd-a:hsl(var(--hue) 100% 82%);--hd-b:hsl(var(--hue) 100% 92%)}
 html[data-theme=c] .page.hue{--hd-a:hsl(var(--hue) 100% 87%);--hd-b:hsl(var(--hue) 100% 94%)}
 .hh-search{margin:10px 16px 8px}
 .g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 10px;padding:14px 16px 0}
@@ -1312,8 +1312,8 @@ function openOv(kind){
   if(kind==='search')setTimeout(function(){var q=document.getElementById('oq');if(q)q.focus()},180)}
 function closeOv(){var o=document.getElementById('ov'),was=S.ov;S.ov=null;if(!o)return;if(was==='filter')swapGrid();o.classList.remove('open');setTimeout(function(){if(o.parentNode&&!S.ov)o.remove()},300)}
 
-/* ---------------- THEMES (Trust Navy + Brand Violet) ---------------- */
-var THEMES=[{id:'b',name:'Trust Navy',sw:'linear-gradient(135deg,#0A2463 50%,#3B7BFF 50%)',tc:'#0A2463'},
+/* ---------------- THEMES (Hard Hat + Brand Violet) ---------------- */
+var THEMES=[{id:'a',name:'Hard Hat',sw:'linear-gradient(135deg,#FFD43B 50%,#0C8A3A 50%)',tc:'#FFD43B'},
  {id:'c',name:'Brand Violet',sw:'linear-gradient(135deg,#D9C4FF 50%,#7028E8 50%)',tc:'#D9C4FF'}];
 function themeBar(){var cur=document.documentElement.dataset.theme;
   document.getElementById('themebar').innerHTML='<span class="tl2">Theme</span>'+THEMES.map(function(t){return '<button data-theme="'+t.id+'" class="'+(t.id===cur?'on':'')+'" aria-pressed="'+(t.id===cur)+'"><i style="background:'+t.sw+'"></i>'+t.name+'</button>'}).join('')}
@@ -1910,7 +1910,7 @@ function vProfile(){var t=S.orders.length,spent=S.orders.reduce(function(a,o){re
   pGroup('Shopping',[pRow(I.orders,'My orders',t+' orders','tab','orders'),pRow(I.heart,'Wishlist',Object.keys(S.wish).length+' saved','wishlist'),pRow(I.pin,'Saved addresses',esc(site().name)+' · '+SITES.length+' sites','sitespage',''),pRow('M3 7h18v12H3z M3 11h18','Wallet',inr(S.wallet.bal)+' balance','sub','wallet'),pRow(I.card,'Payment methods','UPI, cards, net banking','sub','pay')])+
   pGroup('Business',[pRow('M6 3h12v18H6z M9 8h6 M9 12h6 M9 16h3','GST details',u.gst?esc(u.gst):'Add GSTIN for tax invoices','sub','gst'),pRow('M7 3h10v4H7z M5 7h14v14H5z M9 12h6 M9 16h6','Invoices','Download GST invoices (PDF)','sub','inv'),pRow('M12 8v8 M8 12h8 M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z','Request a bulk quote','For large project orders','sub','quote')])+
   pGroup('Support',[pRow('M12 3a6 6 0 0 0-6 6c0 5-2 6-2 6h16s-2-1-2-6a6 6 0 0 0-6-6z M10 19a2 2 0 0 0 4 0','Notifications',(S.notif.orders?'Orders on':'Orders off')+' · '+(S.notif.offers?'offers on':'offers off'),'sub','notif'),pRow('M4 12a8 8 0 1 1 16 0v5h-4v-5h3 M4 12v5h4v-5H5','Help & support','FAQs, chat, raise a ticket','sub','help'),pRow(I.ret,'Returns & damage claims',S.claims.length?S.claims.length+' claim'+(S.claims.length>1?'s':''):'Report within 48 hrs','sub','returns')])+
-  pGroup('Settings',[pRow('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 3v18','Theme',(document.documentElement.dataset.theme==='c'?'Brand Violet':'Trust Navy'),'themedlg',''),pRow('M4 5h16 M4 12h10 M4 19h7','Language',S.lang==='Hindi'?'हिन्दी':'English','sub','lang'),pRow('M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z','Privacy policy','How we use your data','sub','privacy'),pRow('M7 3h10v4H7z M5 7h14v14H5z M9 12h6','Terms of service','Rules for using InstaBuild','sub','terms')])+
+  pGroup('Settings',[pRow('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 3v18','Theme',(document.documentElement.dataset.theme==='c'?'Brand Violet':'Hard Hat'),'themedlg',''),pRow('M4 5h16 M4 12h10 M4 19h7','Language',S.lang==='Hindi'?'हिन्दी':'English','sub','lang'),pRow('M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z','Privacy policy','How we use your data','sub','privacy'),pRow('M7 3h10v4H7z M5 7h14v14H5z M9 12h6','Terms of service','Rules for using InstaBuild','sub','terms')])+
   '<button class="btn danger full" data-act="logout" style="height:54px">'+ico('M15 4h4v16h-4 M10 8l-4 4 4 4 M6 12h10',19)+'Log out</button><button class="va" data-act="sub" data-id="delete" style="align-self:center;color:var(--err)">Delete my account</button>'+
   '<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><img src="'+LOGO_FULL+'" alt="Insta Build" style="height:36px;width:auto"><span style="font-size:12px" class="muted">demo v1.0</span></div></div>'+(S.sheet?logoutSheet():'')+'</div>'}
 
@@ -1988,7 +1988,7 @@ var HI={'Home':'होम','Browse':'ब्राउज़','Trending':'ट्�
  'Current':'वर्तमान','Past orders':'पिछले ऑर्डर','Track order':'ऑर्डर ट्रैक करें','Reorder':'दोबारा ऑर्डर','Details':'विवरण','Order confirmed!':'ऑर्डर कन्फ़र्म हो गया!','Expected delivery':'अनुमानित डिलीवरी','Keep shopping':'खरीदारी जारी रखें','Order details':'ऑर्डर विवरण','Download GST invoice (PDF)':'GST इनवॉइस डाउनलोड (PDF)','Report an issue':'समस्या बताएँ','Report a problem':'समस्या दर्ज करें','Submit claim':'क्लेम जमा करें','Save changes':'बदलाव सहेजें','Edit profile':'प्रोफ़ाइल बदलें',
  'Log in or sign up':'लॉग इन या साइन अप','Get OTP':'OTP पाएँ','Verify & continue':'सत्यापित करें और आगे बढ़ें','Next':'आगे','Get Started':'शुरू करें','Skip':'छोड़ें','Order construction materials':'निर्माण सामग्री ऑर्डर करें','Fast delivery to your site':'आपकी साइट तक तेज़ डिलीवरी','Track every order live':'हर ऑर्डर लाइव ट्रैक करें','Delivery vehicle':'डिलीवरी वाहन','Offers':'ऑफ़र','Total load':'कुल वज़न'};
 function openThemeDlg(){var cur=document.documentElement.dataset.theme;
-  openDlg('<h2 class="h2" style="font-size:19px">Choose a theme</h2><p class="para muted">Pick the look you want to preview. You can change it later from Profile.</p><div class="thm">'+THEMES.map(function(t){return '<button class="thm-o'+(t.id===cur?' on':'')+'" data-act="pickTheme" data-id="'+t.id+'"><span class="thm-sw" style="background:'+t.sw+'"></span><span class="thm-t"><b>'+t.name+'</b><span class="small muted">'+(t.id==='b'?'Deep navy. Trusted and professional.':'Brand violet. Light and friendly.')+'</span></span><span class="rad"></span></button>'}).join('')+'</div>')}
+  openDlg('<h2 class="h2" style="font-size:19px">Choose a theme</h2><p class="para muted">Pick the look you want to preview. You can change it later from Profile.</p><div class="thm">'+THEMES.map(function(t){return '<button class="thm-o'+(t.id===cur?' on':'')+'" data-act="pickTheme" data-id="'+t.id+'"><span class="thm-sw" style="background:'+t.sw+'"></span><span class="thm-t"><b>'+t.name+'</b><span class="small muted">'+(t.id==='a'?'Safety yellow and green. Bold and site-ready.':'Brand violet. Light and friendly.')+'</span></span><span class="rad"></span></button>'}).join('')+'</div>')}
 function trHTML(h){if(S.lang!=='Hindi')return h;return h.replace(/>([^<>]+)</g,function(m,s){var k=s.trim(),v=HI[k];return v?'>'+s.replace(k,v)+'<':m})}
 
 /* ---- all flow actions ---- */
@@ -2212,7 +2212,7 @@ document.getElementById('app').addEventListener('dragstart',function(e){if(e.tar
 function fit(){var s=innerWidth<500?1:Math.min(1,(innerHeight-(document.body.classList.contains('clean')?32:84))/844,(innerWidth-32)/390);FIT=s;document.documentElement.style.setProperty('--fit',s)}
 addEventListener('resize',fit);fit();
 (function(){var q=new URLSearchParams(location.search),t=q.get('theme');document.body.classList.add('clean');
- if(!t){try{t=localStorage.getItem('ib-theme')}catch(e){}}setTheme(t||'b',true);fit()})();
+ if(!t){try{t=localStorage.getItem('ib-theme')}catch(e){}}setTheme(t||'a',true);fit()})();
 render(true);
 setTimeout(function(){S.load='';SEEN={};render(true)},900);
 </script>
