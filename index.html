@@ -1547,6 +1547,7 @@ var VEND=[
  {id:'v4',name:'Metro Plumb & Electric',area:'Sector 62',km:1.6,rel:96,cats:['plumbing','electrical']}];
 var RIDERS=[['Imran Khan','UP16 CT 4821'],['Suresh Yadav','UP14 GT 2093'],['Deepak Singh','UP16 BX 7710']];
 function vendorOf(p){return VEND.filter(function(v){return v.cats.indexOf(p.cat)>-1})[0]}
+var DEMO_FLOW=true; /* demo mode: onboarding steps never block, any phone number / OTP works */
 var GSTRE=/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/,MAILRE=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 S.user={name:'Rahul Verma',email:'rahul.verma@example.com',type:'Contractor',biz:'Verma Constructions',gst:'09ABCDE1234F1Z5',phone:'9876543210'};
 S.f={};S.err={};S.isNew=true;S.authed=false;S.lg='phone';S.ob=0;
@@ -1680,17 +1681,17 @@ function loginOtp(){var v=F('otp'),locked=S.lock&&Date.now()<S.lock,cd=cdLeft(),
    '<div class="otp'+(S.shake?' shake':'')+'" data-act="otpfocus">'+boxes+'<input id="otpin" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="'+esc(v)+'" aria-label="One time password"'+(locked?' disabled':'')+'></div>'+
    (e?'<em class="ferr" style="margin-top:-8px">'+e+'</em>':(S.autoRead?'<span class="small muted" style="display:flex;align-items:center;gap:6px"><span class="live"></span>Reading the OTP from SMS automatically…</span>':''))+
    '<div class="row" style="font-size:13px">'+resend+'</div>'+
-   '<button class="btn pri full" data-act="verify" style="height:56px;border-radius:14px"'+(v.length<6||locked?' disabled':'')+'>Verify &amp; continue</button>'+
+   '<button class="btn pri full" data-act="verify" style="height:56px;border-radius:14px"'+''+'>Verify &amp; continue</button>'+
    '</div></div>'}
 function sendOtp(first){
   S.otpCode=String(100000+Math.floor(Math.random()*900000));S.otpAt=Date.now();S.f.otp='';S.err={};S.autoRead=true;
   setTimeout(function(){pushBanner('Messages · InstaBuild','Your InstaBuild OTP is '+S.otpCode+'. Valid for 10 minutes. Do not share it.')},700);
   setTimeout(function(){if(S.lg==='otp'&&S.autoRead&&S.f.otp===''){S.f.otp=S.otpCode;S.autoRead=false;render();setTimeout(verifyOtp,500)}},2600)}
 function verifyOtp(){
-  if(S.lg!=='otp'||F('otp').length<6)return;
-  if(S.lock&&Date.now()<S.lock){return}
-  if(navigator.onLine===false){S.err.otp='No internet connection. Check your network and try again.';S.autoRead=false;render();return}
-  if(F('otp')===S.otpCode){S.authed=true;S.lg='phone';S.err={};S.user.phone=F('phone');S.f.otp='';
+  if(S.lg!=='otp')return;
+  if(!DEMO_FLOW){if(F('otp').length<6)return;if(S.lock&&Date.now()<S.lock){return}
+  if(navigator.onLine===false){S.err.otp='No internet connection. Check your network and try again.';S.autoRead=false;render();return}}
+  if(DEMO_FLOW||F('otp')===S.otpCode){S.authed=true;S.lg='phone';S.err={};S.user.phone=F('phone');S.f.otp='';
     if(S.isNew){root({s:'setup'})}else{root({s:'home'})}return}
   S.otpTry=(S.otpTry||0)+1;S.autoRead=false;S.f.otp='';
   if(S.otpTry>=3){S.lock=Date.now()+15*60000;S.err.otp='Too many wrong attempts. Please try again after 15 minutes.'}
@@ -1738,6 +1739,7 @@ function validateAddr(){S.err={};if(F('line').trim().length<4)S.err.line='Please
   if(F('cname').trim().length<2)S.err.cname='Enter the contact person\'s name.';
   if(!validPhone(F('cphone')))S.err.cphone='Enter a valid 10-digit mobile number.';return !Object.keys(S.err).length}
 function saveAddr(id){
+  if(DEMO_FLOW){if(F('line').trim().length<4)S.f.line='Plot 14, Sector 62';if(!S.f.pin)S.f.pin='201301';if(!F('cname'))S.f.cname=S.user.name;if(!F('cphone'))S.f.cphone=S.user.phone}
   var s={id:id==='new'?'s'+Date.now():id,name:F('line').trim(),line:F('line').trim(),tag:F('label','Site'),pin:F('pin'),floor:F('floor'),lift:F('lift','Yes'),landmark:F('landmark'),cname:F('cname'),cphone:F('cphone'),pinPos:S.pinPos};
   s.addr=(F('landmark')?F('landmark')+', ':'')+'Noida '+F('pin')+(F('floor')?' · Floor '+F('floor')+(F('lift','Yes')==='Yes'?' (lift)':' (no lift)'):'');
   s.who='Site contact: '+F('cname')+' · +91 '+F('cphone');
@@ -1972,7 +1974,7 @@ function flowAct(a,id,b){
   case 'obnext':if(S.ob<OB.length-1){S.ob++;render(true)}else{root({s:'login'})}return true;
   case 'obskip':root({s:'login'});return true;
   case 'terms':S.f.terms=!S.f.terms;delete S.err.terms;render();return true;
-  case 'getotp':{S.err={};var ph=F('phone');
+  case 'getotp':{S.err={};if(DEMO_FLOW){if(!F('phone'))S.f.phone='9876543210';S.lg='otp';S.otpTry=0;S.resends=0;S.lock=0;sendOtp();render();return true}var ph=F('phone');
     if(!validPhone(ph))S.err.phone='Enter a valid 10-digit mobile number.';
     else if(!F('terms'))S.err.terms='Please accept the Terms and Privacy Policy to continue.';
     else if(navigator.onLine===false)S.err.phone='No internet connection. Check your network and try again.';
@@ -1984,8 +1986,8 @@ function flowAct(a,id,b){
   case 'resend':if(cdLeft()>0||S.resends>=3)return true;S.resends++;S.otpTry=0;sendOtp();render();toast('OTP sent again');return true;
   case 'demoskip':S.authed=true;S.isNew=false;root({s:'home'});return true;
   case 'utype':S.f.utype=id;render();return true;
-  case 'savesetup':if(!validateProfile()){render();return true}
-    S.user.name=F('name').trim();S.user.email=F('email').trim();S.user.type=F('utype','Homeowner');S.user.biz=F('biz');S.user.gst=F('gst');S.isNew=false;S.addrFor=null;root({s:'addr',id:'new',first:1});return true;
+  case 'savesetup':if(!DEMO_FLOW&&!validateProfile()){render();return true}
+    S.user.name=F('name').trim()||'Rahul Verma';S.user.email=F('email').trim();S.user.type=F('utype','Homeowner');S.user.biz=F('biz');S.user.gst=F('gst');S.isNew=false;S.addrFor=null;root({s:'addr',id:'new',first:1});return true;
   case 'saveprofile':if(!validateProfile()){render();return true}
     S.user.name=F('name',S.user.name).trim();S.user.email=F('email',S.user.email).trim();S.user.type=F('utype',S.user.type);S.user.biz=F('biz',S.user.biz);S.user.gst=F('gst',S.user.gst);toast('Profile saved');back();return true;
   case 'savegst':{var g=F('gst',S.user.gst).trim();S.err={};if(g&&!GSTRE.test(g)){S.err.gst='GST number looks wrong. It should be 15 characters, like 22AAAAA0000A1Z5.';render();return true}S.user.gst=g;S.user.biz=F('biz',S.user.biz);toast('GST details saved');back();return true}
@@ -1995,7 +1997,7 @@ function flowAct(a,id,b){
   case 'locallow':closeOv();toast('Detecting your location…');setTimeout(function(){S.pinPos={x:62,y:38};S.f.line='Plot 14, Sector 62';S.f.pin='201301';S.f.landmark='Near Fortis Hospital';if(cur().s==='addr')render();toast('Location detected')},1200);return true;
   case 'locdeny':closeOv();toast('No problem. Drop the pin on the map or type your pincode');return true;
   case 'notifyme':toast('We\'ll notify you when we launch in '+(F('pin')||'your area'));return true;
-  case 'saveaddr':if(!validateAddr()){render();toast('Please fix the highlighted fields');return true}
+  case 'saveaddr':if(!DEMO_FLOW&&!validateAddr()){render();toast('Please fix the highlighted fields');return true}
     {var sv=saveAddr(id);toast('Site saved');if(cur().first||S.stack.length<=1)root({s:'home'});else back()}return true;
   case 'skipaddr':root({s:'home'});return true;
   case 'sitespage':closeOv();push({s:'sub',id:'sites'});return true;
@@ -2052,7 +2054,7 @@ function flowAct(a,id,b){
   app.addEventListener('input',function(e){var t=e.target;
     if(t.id==='otpin'){var v=t.value.replace(/\D/g,'').slice(0,6);t.value=v;S.f.otp=v;S.autoRead=false;delete S.err.otp;
       var bx=app.querySelectorAll('.otp i');[].forEach.call(bx,function(x,i){x.textContent=v[i]||'';x.classList.toggle('cur',i===v.length);x.classList.remove('bad')});
-      var vb=app.querySelector('[data-act=verify]');if(vb)vb.disabled=v.length<6;var er=app.querySelector('.ferr');if(er)er.remove();
+      var vb=app.querySelector('[data-act=verify]');if(vb)vb.disabled=false;var er=app.querySelector('.ferr');if(er)er.remove();
       if(v.length===6)setTimeout(verifyOtp,200);return}
     var k=t.dataset&&t.dataset.bind;if(!k)return;
     var val=t.value;if(t.dataset.up)val=val.toUpperCase();if(k==='phone'||k==='cphone'||k==='pin')val=val.replace(/\D/g,'');
