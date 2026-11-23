@@ -722,6 +722,14 @@ html[data-theme=c] .page.hue{--hd-a:hsl(var(--hue) 100% 87%);--hd-b:hsl(var(--hu
 .sug-r svg{color:var(--muted)}
 .sug-r b{color:var(--ink);font-weight:700}
 .sug-r:active{background:var(--bg2)}
+
+#themebar{display:none!important}
+.thm{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:8px}
+.thm-o{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px;border:1.5px solid var(--line);text-align:left;width:100%;background:#fff;transition:border-color .15s,background .15s}
+.thm-o.on{border-color:var(--p);background:var(--pl)}
+.thm-o.on .rad{border:6px solid var(--p)}
+.thm-sw{width:46px;height:46px;border-radius:14px;flex:0 0 46px;box-shadow:inset 0 0 0 2px #fff,0 2px 6px rgba(0,0,0,.2)}
+.thm-t{flex:1;display:flex;flex-direction:column;gap:2px;font-size:14px}
 </style>
 </head>
 <body>
@@ -1888,7 +1896,7 @@ function vProfile(){var t=S.orders.length,spent=S.orders.reduce(function(a,o){re
   pGroup('Shopping',[pRow(I.orders,'My orders',t+' orders','tab','orders'),pRow(I.heart,'Wishlist',Object.keys(S.wish).length+' saved','wishlist'),pRow(I.pin,'Saved addresses',esc(site().name)+' · '+SITES.length+' sites','sitespage',''),pRow('M3 7h18v12H3z M3 11h18','Wallet',inr(S.wallet.bal)+' balance','sub','wallet'),pRow(I.card,'Payment methods','UPI, cards, net banking','sub','pay')])+
   pGroup('Business',[pRow('M6 3h12v18H6z M9 8h6 M9 12h6 M9 16h3','GST details',u.gst?esc(u.gst):'Add GSTIN for tax invoices','sub','gst'),pRow('M7 3h10v4H7z M5 7h14v14H5z M9 12h6 M9 16h6','Invoices','Download GST invoices (PDF)','sub','inv'),pRow('M12 8v8 M8 12h8 M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z','Request a bulk quote','For large project orders','sub','quote')])+
   pGroup('Support',[pRow('M12 3a6 6 0 0 0-6 6c0 5-2 6-2 6h16s-2-1-2-6a6 6 0 0 0-6-6z M10 19a2 2 0 0 0 4 0','Notifications',(S.notif.orders?'Orders on':'Orders off')+' · '+(S.notif.offers?'offers on':'offers off'),'sub','notif'),pRow('M4 12a8 8 0 1 1 16 0v5h-4v-5h3 M4 12v5h4v-5H5','Help & support','FAQs, chat, raise a ticket','sub','help'),pRow(I.ret,'Returns & damage claims',S.claims.length?S.claims.length+' claim'+(S.claims.length>1?'s':''):'Report within 48 hrs','sub','returns')])+
-  pGroup('Settings',[pRow('M4 5h16 M4 12h10 M4 19h7','Language',S.lang==='Hindi'?'हिन्दी':'English','sub','lang'),pRow('M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z','Privacy policy','How we use your data','sub','privacy'),pRow('M7 3h10v4H7z M5 7h14v14H5z M9 12h6','Terms of service','Rules for using InstaBuild','sub','terms')])+
+  pGroup('Settings',[pRow('M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 3v18','Theme',(document.documentElement.dataset.theme==='c'?'Brand Violet':'Trust Navy'),'themedlg',''),pRow('M4 5h16 M4 12h10 M4 19h7','Language',S.lang==='Hindi'?'हिन्दी':'English','sub','lang'),pRow('M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z','Privacy policy','How we use your data','sub','privacy'),pRow('M7 3h10v4H7z M5 7h14v14H5z M9 12h6','Terms of service','Rules for using InstaBuild','sub','terms')])+
   '<button class="btn danger full" data-act="logout" style="height:54px">'+ico('M15 4h4v16h-4 M10 8l-4 4 4 4 M6 12h10',19)+'Log out</button><button class="va" data-act="sub" data-id="delete" style="align-self:center;color:var(--err)">Delete my account</button>'+
   '<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><img src="'+LOGO_FULL+'" alt="Insta Build" style="height:36px;width:auto"><span style="font-size:12px" class="muted">demo v1.0</span></div></div>'+(S.sheet?logoutSheet():'')+'</div>'}
 
@@ -1965,6 +1973,8 @@ var HI={'Home':'होम','Browse':'ब्राउज़','Trending':'ट्�
  'Profile':'प्रोफ़ाइल','Shopping':'खरीदारी','My orders':'मेरे ऑर्डर','Wishlist':'विशलिस्ट','Saved addresses':'सहेजे गए पते','Wallet':'वॉलेट','Payment methods':'भुगतान के तरीके','Business':'बिज़नेस','GST details':'GST विवरण','Invoices':'इनवॉइस','Support':'सहायता','Notifications':'सूचनाएँ','Help & support':'मदद और सहायता','Returns & damage claims':'रिटर्न और डैमेज क्लेम','Settings':'सेटिंग्स','Language':'भाषा','Privacy policy':'गोपनीयता नीति','Terms of service':'सेवा की शर्तें','Log out':'लॉग आउट','Delete my account':'मेरा खाता हटाएँ',
  'Current':'वर्तमान','Past orders':'पिछले ऑर्डर','Track order':'ऑर्डर ट्रैक करें','Reorder':'दोबारा ऑर्डर','Details':'विवरण','Order confirmed!':'ऑर्डर कन्फ़र्म हो गया!','Expected delivery':'अनुमानित डिलीवरी','Keep shopping':'खरीदारी जारी रखें','Order details':'ऑर्डर विवरण','Download GST invoice (PDF)':'GST इनवॉइस डाउनलोड (PDF)','Report an issue':'समस्या बताएँ','Report a problem':'समस्या दर्ज करें','Submit claim':'क्लेम जमा करें','Save changes':'बदलाव सहेजें','Edit profile':'प्रोफ़ाइल बदलें',
  'Log in or sign up':'लॉग इन या साइन अप','Get OTP':'OTP पाएँ','Verify & continue':'सत्यापित करें और आगे बढ़ें','Next':'आगे','Get Started':'शुरू करें','Skip':'छोड़ें','Order construction materials':'निर्माण सामग्री ऑर्डर करें','Fast delivery to your site':'आपकी साइट तक तेज़ डिलीवरी','Track every order live':'हर ऑर्डर लाइव ट्रैक करें','Delivery vehicle':'डिलीवरी वाहन','Offers':'ऑफ़र','Total load':'कुल वज़न'};
+function openThemeDlg(){var cur=document.documentElement.dataset.theme;
+  openDlg('<h2 class="h2" style="font-size:19px">Choose a theme</h2><p class="para muted">Pick the look you want to preview. You can change it later from Profile.</p><div class="thm">'+THEMES.map(function(t){return '<button class="thm-o'+(t.id===cur?' on':'')+'" data-act="pickTheme" data-id="'+t.id+'"><span class="thm-sw" style="background:'+t.sw+'"></span><span class="thm-t"><b>'+t.name+'</b><span class="small muted">'+(t.id==='b'?'Deep navy. Trusted and professional.':'Brand violet. Light and friendly.')+'</span></span><span class="rad"></span></button>'}).join('')+'</div>')}
 function trHTML(h){if(S.lang!=='Hindi')return h;return h.replace(/>([^<>]+)</g,function(m,s){var k=s.trim(),v=HI[k];return v?'>'+s.replace(k,v)+'<':m})}
 
 /* ---- all flow actions ---- */
@@ -2044,6 +2054,8 @@ function flowAct(a,id,b){
   case 'setlang':S.lang=id;toast(id==='Hindi'?'भाषा हिन्दी में बदल गई':'Language set to English');render();return true;
   case 'dologout':S.sheet=0;S.authed=false;S.lg='phone';S.err={};S.f.otp='';root({s:'login'});return true;
   case 'delacct':S.cart={};S.wish={};S.claims=[];S.tickets=[];S.isNew=true;S.f={};S.authed=false;S.ob=0;S.lg='phone';toast('Your account has been deleted');root({s:'onboard'});return true;
+  case 'themedlg':openThemeDlg();return true;
+  case 'pickTheme':closeOv();setTimeout(function(){setTheme(id)},120);return true;
   case 'noop':return true;
   }
   return false}
@@ -2073,7 +2085,8 @@ function flowAct(a,id,b){
 var FLOWVIEWS={splash:vSplash,onboard:vOnboard,setup:vSetup,addr:vAddr,paying:vPaying,payfail:vPayFail,confirmed:vConfirmed,orderd:vOrderD,claim:vClaimNew,claims:vClaims};
 (function(){var q=location.search||'',h=location.hash||'';
   if(/[?&]home\b/.test(q)||h==='#home'){S.stack=[{s:'home'}];S.authed=true;S.isNew=false;S.load='tab'}
-  else{S.stack=[{s:'splash'}];setTimeout(function(){if(cur().s==='splash')root({s:'onboard'})},2000)}})();
+  else{S.stack=[{s:'splash'}];setTimeout(function(){if(cur().s==='splash')root({s:'onboard'})},2000)}
+  setTimeout(openThemeDlg,400)})();
 
 /* ---------------- RENDER ---------------- */
 var VIEWS={home:vHome,cats:vCats,cat:vCat,coll:vColl,brands:vBrands,brand:vBrand,trending:vTrending,wish:vWish,search:vSearch,product:vProduct,cart:vCart,checkout:vCheckout,track:vTrack,orders:vOrders,profile:vProfile,sub:vSub,login:vLogin};
@@ -2178,7 +2191,7 @@ document.getElementById('app').addEventListener('dragstart',function(e){if(e.tar
 /* scale the 390x844 mockup down on short desktop windows; phones use the full viewport */
 function fit(){var s=innerWidth<500?1:Math.min(1,(innerHeight-(document.body.classList.contains('clean')?32:84))/844,(innerWidth-32)/390);FIT=s;document.documentElement.style.setProperty('--fit',s)}
 addEventListener('resize',fit);fit();
-(function(){var q=new URLSearchParams(location.search),t=q.get('theme');if(q.has('clean'))document.body.classList.add('clean');
+(function(){var q=new URLSearchParams(location.search),t=q.get('theme');document.body.classList.add('clean');
  if(!t){try{t=localStorage.getItem('ib-theme')}catch(e){}}setTheme(t||'b',true);fit()})();
 render(true);
 setTimeout(function(){S.load='';SEEN={};render(true)},900);
